@@ -1,0 +1,148 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #312c00 0.000%, #312c00 14.286%, #332e1e calc(14.286% + 1px), #332e1e 28.571%, #323149 calc(28.571% + 1px), #323149 42.857%, #2c3377 calc(42.857% + 1px), #2c3377 57.143%, #2436a2 calc(57.143% + 1px), #2436a2 71.429%, #1a39c0 calc(71.429% + 1px), #1a39c0 85.714%, #113ccc calc(85.714% + 1px) 100.000%);
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Playfair Display", serif;
+}
+
+.profilecard {
+    background-color: #fff;
+    overflow: hidden;
+    width: 350px;
+    height: 450px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.grey {
+    color: #999;
+    font-size: 14px;
+}
+
+.profiletop {
+    height: 250px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-image: url(paysage-background.png);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.profileimage {
+    background-image: url(paysage-background.png);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    position: absolute;
+    bottom: -75px;
+}
+
+.profilebottom {
+    display: flex;
+    align-items: center;
+    margin-top: 60px;
+    padding: 20px;
+    flex-direction: column;
+    text-align: center;
+}
+
+.maininfos {
+    display: flex;
+   
+    align-items: center;
+    gap: 5px;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.name {
+    font-weight: 700;
+    margin-right: 15px;
+}
+
+.email {
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.ville {
+    font-size: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    color: #555;
+    font-size: 14px;
+}
+
+.ville ion-icon {
+    font-size: 20px;
+    color: #302e80;
+}
+
+.profilestats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 150%;
+}
+
+.stat-item:not(:last-child) {
+    border-right: 1px solid #000000;
+    
+}
+
+.stat{
+    font-size: 18px;
+    font-weight: 700;
+    color: #17157a;
+}
+
+button {
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #17157a;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    background-color: #1e1e2e;
+    box-shadow: rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+    
+}
+
+.profilecard:hover {
+    transform: translateY(-10px);
+    box-shadow: rgba(255, 255, 255, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    transition: all 1s ease;
+}

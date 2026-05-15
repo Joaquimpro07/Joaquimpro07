@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #3e3ec8;
+}
+
+.presentationcard {
+    background-color: #fff;
+    overflow: hidden;
+    width: 350px;
+    height: 450px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.cardtop {
+    height: 250px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-image: url(paysage-background.png);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.image {
+    background-image: url(saske-uchiha8.jpg);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    position: absolute;
+    bottom: -75px;
+}
+
+.cardbottom {
+    display: flex;
+    align-items: center;
+    margin-top: 60px;
+    padding: 20px;
+    flex-direction: column;
+    text-align: center;
+}
+
+.profileinfos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.maininfos {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #999;
+}
+
+.nom {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.job {
+    font-size: 18px;
+    color: #666;
+}
+
+.description {
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+    text-align: center;
+    padding: 0 20px;
+}
+
+
+button {
+    margin: 20px;
+    padding: 10px 20px;
+    background-color: #3e3ec8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #222258;
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.presentationcard:hover{
+    transform: translateY(-10px);
+    box-shadow: rgba(255, 255, 255, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    transition: all 1s ease;
+}
