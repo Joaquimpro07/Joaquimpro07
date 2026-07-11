@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Projet Réseau — Groupe 8</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#ffffff; --accent:#2563eb; --accent2:#0ea5e9;
+    --text:#1e293b; --muted:#64748b; --border:#e2e8f0; --soft:#f1f5f9;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Segoe UI', Arial, sans-serif; color:var(--text);
+    background:linear-gradient(180deg,#0f172a 0%, #1e293b 260px, #f8fafc 260px);
+  }
+  header{
+    max-width:1000px; margin:0 auto; padding:48px 24px 24px;
+    color:#fff; text-align:center;
+  }
+  header h1{ margin:0 0 8px; font-size:2rem; letter-spacing:.5px;}
+  header p{ margin:0; color:#cbd5e1; font-size:1rem;}
+  .badge{
+    display:inline-block; margin-top:14px; padding:6px 16px;
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);
+    border-radius:999px; font-size:.85rem; letter-spacing:.5px;
+  }
+  main{ max-width:1000px; margin:-40px auto 60px; padding:0 24px; }
+  section.card{
+    background:var(--panel); border:1px solid var(--border); border-radius:14px;
+    padding:28px 30px; margin-bottom:26px; box-shadow:0 10px 25px -12px rgba(15,23,42,.15);
+  }
+  h2{
+    display:flex; align-items:center; gap:10px; font-size:1.25rem; margin-top:0;
+    color:#0f172a;
+  }
+  h2 .num{
+    background:var(--accent); color:#fff; width:30px; height:30px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center; font-size:.95rem; flex-shrink:0;
+  }
+  .lead{ color:var(--muted); line-height:1.6; }
+  .img-wrap{ text-align:center; margin:18px 0 6px; }
+  .img-wrap img{
+    max-width:100%; border-radius:10px; border:1px solid var(--border);
+    box-shadow:0 6px 18px -8px rgba(15,23,42,.25);
+  }
+  .caption{ text-align:center; color:var(--muted); font-size:.85rem; margin-top:10px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-top:16px;}
+  .stat{
+    background:var(--soft); border:1px solid var(--border); border-radius:10px;
+    padding:16px 18px;
+  }
+  .stat .n{ font-size:1.5rem; font-weight:700; color:var(--accent); }
+  .stat .l{ font-size:.85rem; color:var(--muted); margin-top:2px; }
+  table{ width:100%; border-collapse:collapse; margin-top:14px; font-size:.92rem; }
+  th, td{ padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; }
+  th{ background:var(--soft); color:#0f172a; font-weight:600; }
+  tr:hover td{ background:#f8fafc; }
+  .tag{
+    display:inline-block; padding:2px 9px; border-radius:6px; font-size:.78rem;
+    background:#dbeafe; color:#1d4ed8; font-weight:600;
+  }
+  .note{
+    background:#fff7ed; border:1px solid #fed7aa; color:#9a3412;
+    border-radius:10px; padding:14px 16px; font-size:.9rem; margin-top:16px; line-height:1.55;
+  }
+  .note b{ color:#7c2d12; }
+  ul{ line-height:1.7; color:var(--text); }
+  code{
+    background:var(--soft); padding:2px 6px; border-radius:5px; font-size:.88em;
+    border:1px solid var(--border);
+  }
+  footer{
+    text-align:center; color:var(--muted); font-size:.85rem; padding:30px 0 50px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🖧 Projet Réseau — Groupe 8</h1>
+  <p>Conception et adressage IP d'une topologie multi-sites sous Cisco Packet Tracer</p>
+  <span class="badge">Adressage FLSM · Réseau 192.168.1.0/24</span>
+</header>
+
+<main>
+
+  <section class="card">
+    <h2><span class="num">1</span> Topologie du réseau</h2>
+    <p class="lead">Le réseau du Groupe 8 relie trois zones de postes clients (LAN) à travers trois routeurs (Router0, Router1, Router2) interconnectés en boucle, chaque zone étant desservie par un commutateur 2960-24TT.</p>
+    <div class="img-wrap">
+      <img src="topologie.png" alt="Topologie du réseau - Cisco Packet Tracer">
+    </div>
+    <p class="caption">Topologie réalisée avec Cisco Packet Tracer — Projet_Reseau_Groupe8.pkt</p>
+
+    <div class="grid">
+      <div class="stat"><div class="n">3</div><div class="l">Commutateurs (Switch 2960-24TT)</div></div>
+      <div class="stat"><div class="n">3</div><div class="l">Routeurs (2911)</div></div>
+      <div class="stat"><div class="n">~24</div><div class="l">Postes clients (PC)</div></div>
+      <div class="stat"><div class="n">3</div><div class="l">Liaisons inter-routeurs</div></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">2</span> Principe de l'adressage FLSM</h2>
+    <p class="lead">
+      L'adressage a été réalisé en <b>FLSM</b> (Fixed Length Subnet Masking — subnetting à taille fixe) à partir du réseau
+      <code>192.168.1.0/24</code>. Contrairement au VLSM, tous les sous-réseaux ont ici <b>le même masque</b>, donc la même capacité
+      d'adresses, même si certains segments (comme les liaisons point-à-point entre routeurs) n'ont besoin que de 2 adresses.
+    </p>
+    <p class="lead">
+      Le réseau <code>192.168.1.0/24</code> est découpé en sous-réseaux de <code>/27</code>
+      (masque <code>255.255.255.224</code>), soit <b>8 sous-réseaux</b> de <b>30 adresses hôtes</b> utilisables chacun.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">3</span> Plan d'adressage</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Sous-réseau</th>
+          <th>Adresse réseau</th>
+          <th>Masque</th>
+          <th>Plage d'hôtes</th>
+          <th>Broadcast</th>
+          <th>Usage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag">S0</span></td>
+          <td>192.168.1.0/27</td>
+          <td>255.255.255.224</td>
+          <td>.1 – .30</td>
+          <td>192.168.1.31</td>
+          <td>LAN Switch0 (PC0–PC7)</td>
+        </tr>
+        <tr>
+          <td><span class="tag">S1</span></td>
+          <td>192.168.1.32/27</td>
+          <td>255.255.255.224</td>
+          <td>.33 – .62</td>
+          <td>192.168.1.63</td>
+          <td>LAN Switch gauche (PC8–PC17)</td>
+        </tr>
+        <tr>
+          <td><span class="tag">S2</span></td>
+          <td>192.168.1.64/27</td>
+          <td>255.255.255.224</td>
+          <td>.65 – .94</td>
+          <td>192.168.1.95</td>
+          <td>LAN Switch droit (PC18–PC23)</td>
+        </tr>
+        <tr>
+          <td><span class="tag">S3</span></td>
+          <td>192.168.1.96/27</td>
+          <td>255.255.255.224</td>
+          <td>.97 – .126</td>
+          <td>192.168.1.127</td>
+          <td>Liaison Router0 ↔ Router1</td>
+        </tr>
+        <tr>
+          <td><span class="tag">S4</span></td>
+          <td>192.168.1.128/27</td>
+          <td>255.255.255.224</td>
+          <td>.129 – .158</td>
+          <td>192.168.1.159</td>
+          <td>Liaison Router0 ↔ Router2</td>
+        </tr>
+        <tr>
+          <td><span class="tag">S5</span></td>
+          <td>192.168.1.160/27</td>
+          <td>255.255.255.224</td>
+          <td>.161 – .190</td>
+          <td>192.168.1.191</td>
+          <td>Liaison Router1 ↔ Router2</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <b>Remarque :</b> les sous-réseaux <code>192.168.1.192/27</code> et <code>192.168.1.224/27</code> restent disponibles
+      pour une extension future du réseau (nouveau LAN ou nouvelle liaison).
+      En FLSM, chaque liaison point-à-point « gaspille » 28 adresses inutilisées (seules 2 sont nécessaires) : c'est le
+      principal inconvénient de cette méthode par rapport au VLSM, mais elle a l'avantage d'être simple à planifier et à gérer.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">4</span> Passerelles des routeurs</h2>
+    <ul>
+      <li><b>Router0</b> — Gig0/0 : <code>192.168.1.1</code> (vers Switch0) · Gig0/1 : <code>192.168.1.97</code> · Gig0/2 : <code>192.168.1.129</code></li>
+      <li><b>Router1</b> — Gig0/0 : <code>192.168.1.33</code> (vers Switch gauche) · Gig0/1 : <code>192.168.1.98</code> · Gig0/2 : <code>192.168.1.161</code></li>
+      <li><b>Router2</b> — Gig0/0 : <code>192.168.1.65</code> (vers Switch droit) · Gig0/1 : <code>192.168.1.130</code> · Gig0/2 : <code>192.168.1.162</code></li>
+    </ul>
+    <p class="lead">Chaque PC obtient une adresse dans le sous-réseau de son LAN, avec pour passerelle par défaut l'adresse du routeur correspondant.</p>
+  </section>
+
+</main>
+
+<footer>
+  Projet Réseau — Groupe 8 · Réalisé avec Cisco Packet Tracer · Adressage FLSM sur 192.168.1.0/24
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion École — Application de gestion scolaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0f2547;
+    --navy:#1b3a6b;
+    --navy-soft:#2a4d85;
+    --amber:#f5a623;
+    --amber-deep:#d98a0f;
+    --green:#2f8f5b;
+    --paper:#f3f5f9;
+    --card:#ffffff;
+    --ink:#152238;
+    --ink-soft:#586274;
+    --line:#dbe1ea;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:'Space Grotesk', sans-serif;
+    color:var(--navy-deep);
+    letter-spacing:-0.01em;
+  }
+
+  .mono{
+    font-family:'JetBrains Mono', monospace;
+  }
+
+  a{color:inherit;}
+
+  /* ---------- layout helpers ---------- */
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+  section{padding:96px 0;}
+  @media (max-width:640px){
+    section{padding:64px 0;}
+    .wrap{padding:0 20px;}
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(15,37,71,0.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .topbar .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:14px; padding-bottom:14px;
+  }
+  .topbar .brand{
+    color:#fff; font-weight:600; font-size:0.95rem;
+    display:flex; align-items:center; gap:8px;
+  }
+  .topbar .brand .dot{
+    width:9px;height:9px;border-radius:50%;background:var(--amber);
+    box-shadow:0 0 0 3px rgba(245,166,35,0.2);
+  }
+  .topbar nav{display:flex; gap:28px;}
+  .topbar nav a{
+    color:rgba(255,255,255,0.72);
+    font-size:0.85rem;
+    text-decoration:none;
+    transition:color .2s ease;
+  }
+  .topbar nav a:hover{color:#fff;}
+  @media (max-width:640px){ .topbar nav{display:none;} }
+
+  /* ---------- hero: styled as the app's own login window ---------- */
+  .hero{
+    background:
+      radial-gradient(1100px 500px at 15% -10%, rgba(245,166,35,0.16), transparent 60%),
+      linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%);
+    padding:80px 0 110px;
+    color:#fff;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:56px;
+    align-items:center;
+  }
+  @media (max-width:860px){
+    .hero .wrap{grid-template-columns:1fr;}
+  }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.75rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--amber);
+    margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:26px; height:1px; background:var(--amber);
+  }
+
+  .hero h1{
+    font-size:clamp(2.1rem, 4.4vw, 3.3rem);
+    color:#fff;
+    line-height:1.08;
+    margin-bottom:22px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--amber);
+  }
+  .hero p.lead{
+    color:rgba(255,255,255,0.72);
+    font-size:1.05rem;
+    max-width:46ch;
+    margin-bottom:30px;
+  }
+  .hero .stack-tags{
+    display:flex; flex-wrap:wrap; gap:9px;
+  }
+  .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    color:rgba(255,255,255,0.85);
+    border:1px solid rgba(255,255,255,0.22);
+    padding:5px 11px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.04);
+  }
+
+  /* mock window chrome — the signature element, echoing the app's own title bars */
+  .window{
+    background:var(--card);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06);
+    transform:rotate(-1.2deg);
+  }
+  .window .titlebar{
+    background:#eef1f6;
+    padding:9px 12px;
+    display:flex; align-items:center; gap:8px;
+    border-bottom:1px solid var(--line);
+  }
+  .window .titlebar .traffic{display:flex; gap:6px;}
+  .window .titlebar .traffic span{
+    width:10px;height:10px;border-radius:50%; display:inline-block;
+    background:#c7ccd6;
+  }
+  .window .titlebar .label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    color:var(--ink-soft);
+    margin-left:4px;
+  }
+  .window img{display:block; width:100%; height:auto;}
+
+  /* ---------- section heads ---------- */
+  .section-head{
+    max-width:640px;
+    margin-bottom:48px;
+  }
+  .section-head .eyebrow{color:var(--amber-deep);}
+  .section-head h2{font-size:clamp(1.5rem, 3vw, 2.1rem);}
+  .section-head p{color:var(--ink-soft); margin-top:10px; font-size:1rem;}
+
+  /* ---------- overview stats ---------- */
+  .overview{background:var(--card); border-bottom:1px solid var(--line);}
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  @media (max-width:700px){ .stat-row{grid-template-columns:repeat(2,1fr);} }
+  .stat{
+    background:var(--card);
+    padding:26px 22px;
+  }
+  .stat .n{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:2rem; font-weight:600;
+    color:var(--navy);
+  }
+  .stat .l{
+    font-size:0.82rem; color:var(--ink-soft); margin-top:4px;
+  }
+
+  /* ---------- feature grid ---------- */
+  .features{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+  }
+  @media (max-width:800px){ .features{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .features{grid-template-columns:1fr;} }
+
+  .feature{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:24px 22px;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .feature:hover{
+    transform:translateY(-3px);
+    box-shadow:0 14px 30px -14px rgba(15,37,71,0.25);
+  }
+  .feature .icon{
+    width:34px; height:34px;
+    border-radius:8px;
+    background:var(--navy);
+    color:var(--amber);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem; font-weight:600;
+    margin-bottom:14px;
+  }
+  .feature h3{font-size:1.02rem; margin-bottom:6px; color:var(--navy-deep);}
+  .feature p{font-size:0.88rem; color:var(--ink-soft);}
+
+  /* ---------- screenshots gallery ---------- */
+  .gallery{
+    display:flex; flex-direction:column; gap:64px;
+  }
+  .shot{
+    display:grid;
+    grid-template-columns:0.85fr 1.15fr;
+    gap:44px;
+    align-items:center;
+  }
+  .shot.reverse{grid-template-columns:1.15fr 0.85fr;}
+  .shot.reverse .shot-text{order:2;}
+  .shot.reverse .shot-img{order:1;}
+  @media (max-width:800px){
+    .shot, .shot.reverse{grid-template-columns:1fr;}
+    .shot.reverse .shot-text{order:1;}
+    .shot.reverse .shot-img{order:2;}
+  }
+  .shot-text .step{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.75rem; color:var(--amber-deep);
+    letter-spacing:0.1em; text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .shot-text h3{font-size:1.3rem; margin-bottom:10px;}
+  .shot-text p{color:var(--ink-soft); font-size:0.95rem;}
+  .shot-text ul{margin-top:14px; padding-left:0; list-style:none;}
+  .shot-text li{
+    font-size:0.86rem; color:var(--ink);
+    padding-left:18px; position:relative; margin-bottom:7px;
+  }
+  .shot-text li::before{
+    content:"—"; position:absolute; left:0; color:var(--amber-deep);
+  }
+
+  .shot-img .window{transform:rotate(0);}
+  .shot-img .window.tone-navy .titlebar{background:var(--navy);}
+  .shot-img .window.tone-navy .titlebar .label{color:rgba(255,255,255,0.8);}
+  .shot-img .window.tone-navy .titlebar .traffic span{background:rgba(255,255,255,0.35);}
+  .shot-img .window.tone-green .titlebar{background:var(--green);}
+  .shot-img .window.tone-green .titlebar .label{color:rgba(255,255,255,0.85);}
+  .shot-img .window.tone-green .titlebar .traffic span{background:rgba(255,255,255,0.4);}
+
+  /* ---------- roles comparison ---------- */
+  .roles{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+  }
+  @media (max-width:700px){ .roles{grid-template-columns:1fr;} }
+  .role-card{
+    border-radius:14px;
+    padding:28px 26px;
+    color:#fff;
+  }
+  .role-card.admin{background:linear-gradient(160deg, var(--navy) 0%, var(--navy-deep) 100%);}
+  .role-card.user{background:linear-gradient(160deg, #34a06a 0%, var(--green) 100%);}
+  .role-card .role-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase;
+    opacity:0.75; margin-bottom:8px; display:block;
+  }
+  .role-card h3{color:#fff; font-size:1.15rem; margin-bottom:14px;}
+  .role-card ul{list-style:none;}
+  .role-card li{
+    font-size:0.88rem;
+    padding:9px 0;
+    border-top:1px solid rgba(255,255,255,0.14);
+    display:flex; gap:10px; align-items:flex-start;
+  }
+  .role-card li:first-of-type{border-top:none;}
+  .role-card li::before{content:"✓"; opacity:0.7; flex-shrink:0;}
+
+  /* ---------- footer ---------- */
+  footer{
+    background:var(--navy-deep);
+    color:rgba(255,255,255,0.55);
+    padding:40px 0;
+    font-size:0.82rem;
+    text-align:center;
+  }
+  footer strong{color:rgba(255,255,255,0.85); font-weight:500;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span> Gestion École</div>
+    <nav>
+      <a href="#apercu">Aperçu</a>
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#interfaces">Interfaces</a>
+      <a href="#roles">Rôles</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Projet — Application de bureau</div>
+      <h1>Gérer une école,<br>écran par <em>écran</em>.</h1>
+      <p class="lead">
+        Une application de bureau pensée pour la vie quotidienne d'un établissement scolaire :
+        élèves, classes, enseignants, matières et notes, réunis dans une seule interface,
+        avec un accès différencié pour l'administrateur et le personnel.
+      </p>
+      <div class="stack-tags">
+        <span class="tag">Application desktop</span>
+        <span class="tag">Base de données relationnelle</span>
+        <span class="tag">Authentification par rôle</span>
+        <span class="tag">Export PDF</span>
+      </div>
+    </div>
+    <div class="window">
+      <div class="titlebar">
+        <div class="traffic"><span></span><span></span><span></span></div>
+        <span class="label">Gestion École — Connexion</span>
+      </div>
+      <img src="Capture d'écran Connexion 2026-06-12 025517.png" alt="Écran de connexion de l'application Gestion École">
+    </div>
+  </div>
+</header>
+
+<section class="overview" id="apercu">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Aperçu</div>
+      <h2>Un tableau de bord central pour l'école</h2>
+      <p>L'application centralise les données scolaires et adapte ce qu'elle affiche selon la personne connectée.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="n">5</div><div class="l">modules (Élèves, Classes, Enseignants, Matières, Notes)</div></div>
+      <div class="stat"><div class="n">2</div><div class="l">niveaux d'accès distincts</div></div>
+      <div class="stat"><div class="n">7+</div><div class="l">niveaux de classes gérés, de la 6ème à la Tle</div></div>
+      <div class="stat"><div class="n">1</div><div class="l">export PDF en un clic</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="fonctionnalites">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Fonctionnalités</div>
+      <h2>Ce que l'application permet de faire</h2>
+      <p>Les actions essentielles à la gestion d'un établissement, accessibles depuis une interface unique.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="icon">01</div>
+        <h3>Connexion sécurisée</h3>
+        <p>Un écran de connexion avec identifiant et mot de passe protège l'accès aux données de l'école.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">02</div>
+        <h3>Fiches élèves</h3>
+        <p>Nom, prénom, date de naissance, sexe et classe pour chaque élève, dans un tableau clair et triable.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">03</div>
+        <h3>Ajout, modification, suppression</h3>
+        <p>L'administrateur ajoute, modifie ou supprime une fiche élève directement depuis la liste.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">04</div>
+        <h3>Classes &amp; enseignants</h3>
+        <p>Des onglets dédiés pour organiser les classes, les enseignants et les matières enseignées.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">05</div>
+        <h3>Suivi des notes</h3>
+        <p>Chaque élève peut être sélectionné pour consulter ses notes par matière, avec coefficient et date.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">06</div>
+        <h3>Export PDF</h3>
+        <p>La liste des élèves peut être exportée en PDF pour l'archivage ou l'impression.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="interfaces" style="background:var(--card); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Interfaces</div>
+      <h2>Trois écrans, deux façons de voir l'école</h2>
+      <p>La même base de données, présentée différemment selon qui est derrière l'écran.</p>
+    </div>
+
+    <div class="gallery">
+      <div class="shot">
+        <div class="shot-text">
+          <div class="step">Étape 1</div>
+          <h3>Connexion</h3>
+          <p>Un écran d'accueil sobre demande un identifiant et un mot de passe avant de donner accès à l'application.</p>
+          <ul>
+            <li>Identification par login et mot de passe</li>
+            <li>Redirection vers une interface différente selon le rôle</li>
+          </ul>
+        </div>
+        <div class="shot-img">
+          <div class="window">
+            <div class="titlebar">
+              <div class="traffic"><span></span><span></span><span></span></div>
+              <span class="label">Gestion École — Connexion</span>
+            </div>
+            <img src="Capture d'écran Connexion 2026-06-12 025517.png" alt="Écran de connexion">
+          </div>
+        </div>
+      </div>
+
+      <div class="shot reverse">
+        <div class="shot-text">
+          <div class="step">Étape 2 — Vue administrateur</div>
+          <h3>Gestion complète des élèves</h3>
+          <p>L'administrateur accède à tous les onglets (Élèves, Classes, Enseignants, Matières, Notes) et peut ajouter, modifier ou supprimer des données.</p>
+          <ul>
+            <li>Tableau complet des élèves avec leur classe</li>
+            <li>Boutons Ajouter / Modifier / Supprimer / Exporter PDF</li>
+          </ul>
+        </div>
+        <div class="shot-img">
+          <div class="window tone-navy">
+            <div class="titlebar">
+              <div class="traffic"><span></span><span></span><span></span></div>
+              <span class="label">Administrateur — Élèves</span>
+            </div>
+            <img src="Capture d'écran Admin 2026-06-12 032439.png" alt="Interface administrateur listant les élèves">
+          </div>
+        </div>
+      </div>
+
+      <div class="shot">
+        <div class="shot-text">
+          <div class="step">Étape 3 — Vue utilisateur</div>
+          <h3>Consultation des élèves et des notes</h3>
+          <p>Le personnel enseignant consulte la liste des élèves, effectue une recherche, puis sélectionne un élève pour afficher ses notes par matière.</p>
+          <ul>
+            <li>Recherche et filtre parmi les élèves</li>
+            <li>Détail des notes : matière, coefficient, note sur 20, date</li>
+          </ul>
+        </div>
+        <div class="shot-img">
+          <div class="window tone-green">
+            <div class="titlebar">
+              <div class="traffic"><span></span><span></span><span></span></div>
+              <span class="label">Utilisateur — Consultation</span>
+            </div>
+            <img src="Capture d'écran Utilisateur 2026-06-12 032526.png" alt="Interface utilisateur consultant les élèves et leurs notes">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="roles">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Rôles</div>
+      <h2>Deux profils, deux niveaux d'accès</h2>
+      <p>L'interface s'adapte pour ne montrer que ce qui est pertinent selon la personne connectée.</p>
+    </div>
+    <div class="roles">
+      <div class="role-card admin">
+        <span class="role-tag">Compte Administrateur</span>
+        <h3>Gestion complète</h3>
+        <ul>
+          <li>Accès à tous les onglets : Élèves, Classes, Enseignants, Matières, Notes</li>
+          <li>Ajout, modification et suppression des fiches élèves</li>
+          <li>Export des listes en PDF</li>
+          <li>Rafraîchissement des données en un clic</li>
+        </ul>
+      </div>
+      <div class="role-card user">
+        <span class="role-tag">Compte Utilisateur</span>
+        <h3>Consultation</h3>
+        <ul>
+          <li>Consultation des élèves et de leurs informations</li>
+          <li>Recherche rapide parmi la liste des élèves</li>
+          <li>Consultation des notes par matière, coefficient et date</li>
+          <li>Consultation des moyennes des élèves</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Projet <strong>Gestion École</strong> — application de bureau pour la gestion des élèves, classes et notes.
+  </div>
+</footer>
+
+</body>
+</html>
